@@ -5,4 +5,4 @@ module.exports = {
     DB: "employee_db",
     dialect: "postgres",
     port: 5432
-}
+};

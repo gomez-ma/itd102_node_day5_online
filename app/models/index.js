@@ -1,20 +1,28 @@
-const config = require('../config/db');
-const sequelize = require('sequelize');
+const config = require("../config/db.js");
 
-//for connect database
-const dataType = new sequelize(
-    config.DB,
-    config.USER,
-    config.PASSWORD,
-    {
-        host: config.HOST,
-        dialect: config.dialect
-    }
+const dataType = require("sequelize");
+const sequelize = new dataType(
+  config.DB,
+  config.USER,
+  config.PASSWORD,
+  {
+    host: config.HOST,
+    dialect: config.dialect
+  }
 );
 
 const db = {};
 
-//(dataType, sequelize)
-db.employee = require("./employee.model")(dataType, sequelize);
+db.dataType = dataType;
+db.sequelize = sequelize;
+
+db.employee = require("./employee.model.js")(sequelize, dataType);
+db.setting = require("./setting.model.js")(sequelize, dataType);
+
+// one-to-one
+db.employee.hasOne(db.setting, {
+  onDelete: 'CASCADE'
+});
+db.setting.belongsTo(db.employee);
 
 module.exports = db;
