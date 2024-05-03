@@ -53,3 +53,76 @@ exports.insertEmployee = (req, res) => {
         console.log(error);
     }
 };
+
+exports.findEmployeeById = (req, res) => {
+    try {
+        const id = req.params.id;
+        Employee.findByPk(id)
+            .then(data => {
+                if (data) {
+                    res.status(200).json(data);
+                } else {
+                    res.status(404).json({
+                        message: "Id not found!"
+                    });
+                }
+            })
+            .catch(err => {
+                res.status(500).json({ message: err.message })
+            });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+exports.updateEmployeeById = (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const updateEmployee = {
+            name: req.body.name,
+            position: req.body.position
+        };
+
+        Employee.update(updateEmployee, { where: { id: id } })
+            .then(data => {
+                if (data == 1) {
+                    res.status(200).json({
+                        message: "Updated successfully"
+                    });
+                } else {
+                    res.status(400).json({
+                        message: "Update failed!"
+                    });
+                }
+            })
+            .catch(err => {
+                res.status(500).json({ message: err.message })
+            });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+exports.deleteEmployeeById = (req, res) => {
+    try {
+        const id = req.params.id;
+        Employee.destroy({ where: { id:id } })
+        .then( data => {
+            if(data == 1){
+                res.status(200).json({
+                    message: "Deleted successfully"
+                });
+            }else{
+                res.status(400).json({
+                    message: "Deleted failed!"
+                });
+            }
+        })
+        .catch( err => {
+            res.status(500).json({ message: err.message });
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
