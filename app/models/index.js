@@ -18,11 +18,21 @@ db.sequelize = sequelize;
 
 db.employee = require("./employee.model.js")(sequelize, dataType);
 db.setting = require("./setting.model.js")(sequelize, dataType);
+db.company = require("./company.model.js")(sequelize, dataType);
 
 // one-to-one
 db.employee.hasOne(db.setting, {
   onDelete: 'CASCADE'
 });
 db.setting.belongsTo(db.employee);
+
+// one-to-many
+db.company.hasMany(db.employee,{
+  foreignKey: "companyId",
+  onDelete: 'CASCADE'
+});
+db.employee.belongsTo(db.company,{
+  foreignKey: "companyId"
+});
 
 module.exports = db;

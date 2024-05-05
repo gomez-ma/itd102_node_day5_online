@@ -33,7 +33,8 @@ exports.insertEmployee = (req, res) => {
         }
         const newEmployee = {
             name: req.body.name,
-            position: req.body.position
+            position: req.body.position,
+            companyId: req.body.companyId
         };
 
         Employee.create(newEmployee)
@@ -81,7 +82,8 @@ exports.updateEmployeeById = (req, res) => {
 
         const updateEmployee = {
             name: req.body.name,
-            position: req.body.position
+            position: req.body.position,
+            companyId: req.body.companyId
         };
 
         Employee.update(updateEmployee, { where: { id: id } })
