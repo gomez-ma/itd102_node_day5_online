@@ -1,6 +1,7 @@
 const db = require("../models");
 const Employee = db.employee;
 const Setting = db.setting;
+const Project = db.project;
 
 exports.findAllEmployee = (req, res) => {
     try {
@@ -58,7 +59,14 @@ exports.insertEmployee = (req, res) => {
 exports.findEmployeeById = (req, res) => {
     try {
         const id = req.params.id;
-        Employee.findByPk(id)
+        Employee.findByPk(id, {
+            include: [
+              {
+                model: Project,
+                attributes: ["name"],
+              },
+            ],
+        })
             .then(data => {
                 if (data) {
                     res.status(200).json(data);
